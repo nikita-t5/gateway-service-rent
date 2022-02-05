@@ -1,0 +1,52 @@
+server:
+  port: 8080
+logging:
+  level:
+    root: INFO
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          useInsecureTrustManager: true
+      routes:
+        - id: web owner publication
+          uri: http://localhost:8081
+          predicates:
+            - Path=/web/owner/publication/**
+        - id: mobile owner publication
+          uri: http://localhost:8081
+          predicates:
+            - Path=/mobile/owner/publication/**
+
+        - id: web renter catalog
+          uri: http://localhost:8082
+          predicates:
+            - Path=/web/renter/catalog/**
+        - id: mobile renter catalog
+          uri: http://localhost:8082
+          predicates:
+            - Path=/mobile/renter/catalog/**
+
+#        - id: registration
+#          uri: http://localhost:8082
+#          predicates:
+#            - Path=/registration
+#          filters:
+#            - RewritePath=/registration, /auth
+
+#        - id: token
+#          uri: http://localhost:8083
+#          predicates:
+#            - Path=/login
+#          filters:
+#            - RewritePath=/login, /auth/token
+
+        - id: redirect
+          uri: https://spring.io/guides
+          predicates:
+            - Path=/redirect
+          filters:
+            - RedirectTo=302, https://spring.io/guides
